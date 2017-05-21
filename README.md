@@ -79,7 +79,39 @@ Then we can build the React application by running:
 
   $ yarn install
 
-You now have a fully functional React application that you can start with:
+The install command build the basic scaffolding for your react app. We won't go too much into detail and just briefly cover the main App.js file that you find in your src folder:
+
+  import React, { Component } from 'react';
+  import logo from './logo.svg';
+  import './App.css';
+
+  class App extends Component {
+    render() {
+      return (
+        <div className="App">
+          <div className="App-header">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h2>Welcome to React</h2>
+          </div>
+          <p className="App-intro">
+            To get started, edit <code>src/App.js</code> and save to reload.
+          </p>
+        </div>
+      );
+    }
+  }
+
+  export default App;
+
+This is a very simple React component. The 'render' method is just basic HTML. Variables can be injected into the HTML by using curly braces '{}'. The logo that we import with:
+
+  import logo from './logo.svg';
+
+is injected into the 'src' attribute of the image tag:
+
+  <img src={logo} className="App-logo" alt="logo" />
+
+To start your application run:
 
   $ yarn start
 
@@ -87,11 +119,11 @@ Your browser will automatically open the react app on 'localhost:3000'.
 The app will automatically watch the files in the '/src' folder of your app and reload the application in your browser immediately.
 Try, for instance, to change the headline in 'src/App.js' from:
 
-  <h2>App</h2>
+  <h2>Welcome to React</h2>
 
 to:
 
-  <h2>Hello Plone</h2>
+  <h2>Welcome to Plone</h2>
 
 This works for HTML, JavaScript and any style changes in your app.
 
@@ -99,10 +131,21 @@ create-react-app also comes with a Jest-based test setup and an example test tha
 
   $ yarn test
 
+
 Connecting to plone.restapi
 ---------------------------
 
-With the basic application structure in place, we can now start to connect to plone.restapi. First we create constants for the base API URL and the API headers that we need to send with each request to the Plone server to 
+With the basic application structure in place, we can now start to connect to plone.restapi. 
+
+
+  constructor(){
+    super();
+    this.state={
+      page: {}
+    };
+  }
+
+First we create constants for the base API URL and the API headers that we need to send with each request to the Plone server to 
 
 App.js:
 
