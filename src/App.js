@@ -9,7 +9,8 @@ const API_HEADERS = {
 };
 
 
-class AppContainer extends Component {
+class App extends Component {
+
   constructor(){
     super();
     this.state={
@@ -28,32 +29,24 @@ class AppContainer extends Component {
     });
   }
 
-  render(){
-    return (
-      <App page={this.state.page} />
-    );
-  }
-}
-
-class App extends Component {
   render() {
     return (
       <div className="App">
         <div className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h2>{this.props.page.title}</h2>
+          <h2>{this.state.page.title}</h2>
         </div>
         {
-          this.props.page.description &&
-          <h3>{this.props.page.description}</h3>
+          this.state.page.description &&
+          <h3>{this.state.page.description}</h3>
         }
         {
-          this.props.page.text &&
-          <p dangerouslySetInnerHTML={{ __html: this.props.page.text.data }} />
+          this.state.page.text &&
+          <p dangerouslySetInnerHTML={{ __html: this.state.page.text.data }} />
         }
       </div>
     );
   }
 }
 
-export default AppContainer;
+export default App;
