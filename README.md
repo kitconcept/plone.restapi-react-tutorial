@@ -1,7 +1,7 @@
 plone.restapi-react-tutorial
 ============================
 
-This is a minimal tutorial about how to get started with React and plone.restapi.
+This tutorial explains how to build a React-based JavaScript front-end application that queries a Plone REST API back-end to display the front-page of the Plone site.
 
 Prerequisits
 ------------
@@ -136,7 +136,9 @@ Connecting to plone.restapi
 ---------------------------
 
 With the basic application structure in place, we can now start to connect to plone.restapi. 
+We are going to make a single call to the Plone backend to retrieve the front-page of our Plone site and display it within our React app.
 
+One of the core principles of React is a uni-directional data flow of component state. We define a constructor method, that sets the state of our
 
   constructor(){
     super();
@@ -145,63 +147,60 @@ With the basic application structure in place, we can now start to connect to pl
     };
   }
 
-First we create constants for the base API URL and the API headers that we need to send with each request to the Plone server to 
+When our component has been instantiated properly, we want retrieve the Plone front-page via plone.restapi. A React component provides certain lifecycle events that can be used to do the back-end call.
 
-App.js:
+Please note that this very basic example violates the single responsibility pattern that is considered best practice in the React community. A React component should only be responsible for one thing. Therefore in a real-world application, we would move the API call to a 'container component' that does the actual API call and use component props to pass it to the component that actually displays the content.
 
-  const API_URL = 'http://localhost:8080/Plone';
-  const API_HEADERS = {
-    'Accept': 'application/json',
-    'Authorization': 'Basic Zm9vYmFyOmZvb2Jhcgo='
-  };
+We use the componentDidMount lifecycle event that is fired after the succesful instantiation of the React component. We use the ES6 fetch API to do the call to the backend. 
 
+Note that React does not make any assumptions about what libraries you use to query the backend. You could as well use RxJs or any other library to do the call.
 
+  componentDidMount(){
+    fetch(
+      'http://localhost:8080/Plone/front-page', 
+      {
+        headers: {
+          'Accept': 'application/json',
+        }
+      }
+    )
+    .then((response) => response.json())
+    .then((responseData) => {
+      this.setState({page: responseData});
+    })
+    .catch((error) => {
+      console.log('Error fetching and parsing data', error);
+    });
+  }
+
+The URL that we query for the backend call is similar to the URL you would use in a browser to retrieve the front-page in your browser. plone.restapi uses content negotiation to tell Plone that it actually would like to get a JSON response. This is done by sending the HTTP header 'Accept' with the value 'application/json'.
+
+Check your browser console and the network tab of your developer tools to make sure the API call was actually successful.
+With the successful API call in place we can now use the data that has been successfully stored in our component state variable.
+State variables that we defined in our constructor method and that has been filled with actual data in our componentsDidMount method can be accessed in the component render method now.
+
+Replace the Hello React headline with the title of the Plone front page:
+
+<h2>{this.state.page.title}</h2>
+
+We can also show the description and the body text of the front-page.
   class AppContainer extends Component {
-    constructor(){
-      super();
-      this.state={
-        page: {}
-      };
-    }
 
-    componentDidMount(){
-      fetch(API_URL + '/front-page', {headers: API_HEADERS})
-      .then((response) => response.json())
-      .then((responseData) => {
-        this.setState({page: responseData});
-      })
-      .catch((error) => {
-        console.log('Error fetching and parsing data', error);
-      });
-    }
+    ...
 
     render(){
       return (
-        <App page={this.state.page} />
+
+        ...
+
+        {
+          this.state.page.description &&
+          <h3>{this.state.page.description}</h3>
+        }
+        {
+          this.state.page.text &&
+          <p dangerouslySetInnerHTML={{ __html: this.state.page.text.data }} />
+        }
       );
     }
   }
-
-src/index.js:
-
-  import App->AppContainer from './App';
-  <App /> -> <AppContainer />
-
-App.test.js:
-
-  import React from 'react';
-  import ReactDOM from 'react-dom';
-  import AppContainer from './App';
-
-  it('renders without crashing', () => {
-    const div = document.createElement('div');
-    ReactDOM.render(<AppContainer />, div);
-  });
-
-Visual Studio Code Configuration
---------------------------------
-
-Install and download Visual Studio Code 
-
-https://marketplace.visualstudio.com/items?itemName=joshpeng.sublime-babel-vscode
-
