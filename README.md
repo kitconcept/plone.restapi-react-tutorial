@@ -7,9 +7,9 @@ Prerequisits
 ------------
 
 Before we can start, you need Node.js 6 and the Node package manager (npm) installed. Please check https://nodejs.org for install instructions.
-To ease development with multiple Node versions, we recommend to use nvm.
+To ease development with multiple Node versions, we recommend to use nvm (https://github.com/creationix/nvm).
 
-We will also use the yarn package manager from Facebook which provides you with repeatable and stable builds, amongst other features. To install yarn globally run:
+We will also use the yarn package manager (https://yarnpkg.com/en/) which provides you with repeatable and stable builds, amongst other features. To install yarn globally run:
 
   $ npm install yarn -g
 
@@ -54,9 +54,9 @@ You also need a Plone instance with plone.restapi installed. Here is a minimal b
   upgrade-all-profiles = False
   site-replace = True
 
-Note the zcml-additional configuration that defines a CORS policy that allows the React application that we are going to write to connection to our Plone backend.
+The instance section contains a zcml-additional configuration that defines a CORS policy that allows the React application  to connection to our Plone backend. See https://pypi.python.org/pypi/plone.rest for further details if necessary.
 
-For convenience, we also added a plonesite section that automatically creates a Plone instance during the buildout run.
+The 'plonesite' section has been added as for convenience, to create a Plone instance during the buildout run.
 
 
 Create React App
@@ -66,20 +66,31 @@ To create our first React project, we have to install the [Create React App](htt
 
   $ yarn install create-react-app -g
 
-We install create-react-app globally (by using the '-g' paramater of 'npm install') to make the 'create-react-app' command available on our command line.
-We create a new React application with the name 'plone.restapi-react-tutorial':
+Install create-react-app globally (by using the '-g' paramater) to make the 'create-react-app' command available on our command line.
+Create a new React application with the name 'plone.restapi-react-tutorial':
 
   $ create-react-app plone.restapi-react-tutorial
 
-This will create a new folder with the name of the app that we cd into:
+Now open the 'plone.restapi-react-tutorial' folder in your prefered editor and check the files that have been created. We will just briefly go through 
 
-  $ cd plone.restapi-react-tutorial/
+The index.html file in the public folder is just a static HTML file that contains a single element with the id 'root':
 
-Then we can build the React application by running:
+<div id="root"></div>
 
-  $ yarn install
+Webpack will inject the necessary JavaScript into that HTML when it is served or build.
+The main JavaScript file is 'index.js' in the '/src' folder with the following contents:
 
-The install command build the basic scaffolding for your react app. We won't go too much into detail and just briefly cover the main App.js file that you find in your src folder:
+  import React from 'react';
+  import ReactDOM from 'react-dom';
+  import App from './App';
+  import './index.css';
+
+  ReactDOM.render(
+    <App />,
+    document.getElementById('root')
+  );
+
+The install command builds the basic scaffolding for your react app. We won't go too much into detail and just briefly cover the main App.js file that you find in your src folder:
 
   import React, { Component } from 'react';
   import logo from './logo.svg';
@@ -110,6 +121,14 @@ This is a very simple React component. The 'render' method is just basic HTML. V
 is injected into the 'src' attribute of the image tag:
 
   <img src={logo} className="App-logo" alt="logo" />
+
+This will create a new folder with the name of the app that we 'cd' into:
+
+  $ cd plone.restapi-react-tutorial/
+
+Then build the React application by running:
+
+  $ yarn install
 
 To start your application run:
 
