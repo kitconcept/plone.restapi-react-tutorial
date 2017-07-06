@@ -54,7 +54,7 @@ You also need a Plone instance with plone.restapi installed. Here is a minimal b
   upgrade-all-profiles = False
   site-replace = True
 
-The instance section contains a zcml-additional configuration that defines a CORS policy that allows the React application  to connection to our Plone backend. See https://pypi.python.org/pypi/plone.rest for further details if necessary.
+The instance section contains a zcml-additional configuration that defines a CORS policy that allows the React application to connection to our Plone backend. See https://pypi.python.org/pypi/plone.rest for further details if necessary.
 
 The 'plonesite' section has been added as for convenience, to create a Plone instance during the buildout run.
 
@@ -64,21 +64,21 @@ Create React App
 
 To create our first React project, we have to install the [Create React App](https://github.com/facebookincubator/create-react-app):
 
-  $ yarn install create-react-app -g
+  $ yarn add create-react-app
 
-Install create-react-app globally (by using the '-g' paramater) to make the 'create-react-app' command available on our command line.
-Create a new React application with the name 'plone.restapi-react-tutorial':
+We install create-react-app globally (by using the '-g' paramater) to make the 'create-react-app' command available on our command line.
+Create a new React application with the name 'plone.restapi-react-tutorial' by:
 
   $ create-react-app plone.restapi-react-tutorial
 
-Now open the 'plone.restapi-react-tutorial' folder in your prefered editor and check the files that have been created. We will just briefly go through 
+Now open the 'plone.restapi-react-tutorial' folder in your prefered editor and check the files that have been created.
 
-The index.html file in the public folder is just a static HTML file that contains a single element with the id 'root':
+The index.html file in the 'public' folder is just a static HTML file that contains a single element with the id 'root' to bootstrap the JavaScript application:
 
-<div id="root"></div>
+  <div id="root"></div>
 
-Webpack will inject the necessary JavaScript into that HTML when it is served or build.
-The main JavaScript file is 'index.js' in the '/src' folder with the following contents:
+Webpack will take care of injecting the necessary JavaScript.
+The JavaScript entry point is the 'index.js' in the '/src' folder with the following contents:
 
   import React from 'react';
   import ReactDOM from 'react-dom';
@@ -90,7 +90,9 @@ The main JavaScript file is 'index.js' in the '/src' folder with the following c
     document.getElementById('root')
   );
 
-The install command builds the basic scaffolding for your react app. We won't go too much into detail and just briefly cover the main App.js file that you find in your src folder:
+The 'ReactDom.render' method takes the application element as a first parameter and the DOM-element where it is rendered as a second argument.
+
+The application element '<App />' is imported from the App.js file that you find in your src folder:
 
   import React, { Component } from 'react';
   import logo from './logo.svg';
@@ -114,7 +116,12 @@ The install command builds the basic scaffolding for your react app. We won't go
 
   export default App;
 
-This is a very simple React component. The 'render' method is just basic HTML. Variables can be injected into the HTML by using curly braces '{}'. The logo that we import with:
+This is a very simple React component.
+It is a regular JavaScript class that extends the 'Component' class from react.
+Its 'render' method is supposed to just return basic HTML.
+
+Variables can be injected into the HTML by using curly braces '{}'.
+The logo that we import with:
 
   import logo from './logo.svg';
 
@@ -122,7 +129,7 @@ is injected into the 'src' attribute of the image tag:
 
   <img src={logo} className="App-logo" alt="logo" />
 
-This will create a new folder with the name of the app that we 'cd' into:
+To start the React app, we 'cd' into the directory we created:
 
   $ cd plone.restapi-react-tutorial/
 
@@ -134,7 +141,7 @@ To start your application run:
 
   $ yarn start
 
-Your browser will automatically open the react app on 'localhost:3000'. 
+Your browser will automatically open the react app on 'localhost:3000'.
 The app will automatically watch the files in the '/src' folder of your app and reload the application in your browser immediately.
 Try, for instance, to change the headline in 'src/App.js' from:
 
@@ -154,7 +161,7 @@ create-react-app also comes with a Jest-based test setup and an example test tha
 Connecting to plone.restapi
 ---------------------------
 
-With the basic application structure in place, we can now start to connect to plone.restapi. 
+With the basic application structure in place, we can now start to connect to plone.restapi.
 We are going to make a single call to the Plone backend to retrieve the front-page of our Plone site and display it within our React app.
 
 One of the core principles of React is a uni-directional data flow of component state. We define a constructor method, that sets the state of our
@@ -170,13 +177,13 @@ When our component has been instantiated properly, we want retrieve the Plone fr
 
 Please note that this very basic example violates the single responsibility pattern that is considered best practice in the React community. A React component should only be responsible for one thing. Therefore in a real-world application, we would move the API call to a 'container component' that does the actual API call and use component props to pass it to the component that actually displays the content.
 
-We use the componentDidMount lifecycle event that is fired after the succesful instantiation of the React component. We use the ES6 fetch API to do the call to the backend. 
+We use the componentDidMount lifecycle event that is fired after the succesful instantiation of the React component. We use the ES6 fetch API to do the call to the backend.
 
 Note that React does not make any assumptions about what libraries you use to query the backend. You could as well use RxJs or any other library to do the call.
 
   componentDidMount(){
     fetch(
-      'http://localhost:8080/Plone/front-page', 
+      'http://localhost:8080/Plone/front-page',
       {
         headers: {
           'Accept': 'application/json',
