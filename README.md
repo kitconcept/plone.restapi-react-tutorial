@@ -13,6 +13,7 @@ We will also use the yarn package manager (https://yarnpkg.com/en/) which provid
 
 You also need a Plone instance with plone.restapi installed. Here is a minimal buildout configuration:
 
+```
   [buildout]
   extends = http://dist.plone.org/release/5.0.7/versions.cfg
   parts = instance
@@ -51,6 +52,7 @@ You also need a Plone instance with plone.restapi installed. Here is a minimal b
   upgrade-portal = False
   upgrade-all-profiles = False
   site-replace = True
+```
 
 The instance section contains a zcml-additional configuration that defines a CORS policy that allows the React application to connection to our Plone backend. See https://pypi.python.org/pypi/plone.rest for further details if necessary.
 
@@ -72,11 +74,14 @@ Now open the 'plone.restapi-react-tutorial' folder in your prefered editor and c
 
 The index.html file in the 'public' folder is just a static HTML file that contains a single element with the id 'root' to bootstrap the JavaScript application:
 
+```
   <div id="root"></div>
+```
 
 Webpack will take care of injecting the necessary JavaScript.
 The JavaScript entry point is the 'index.js' in the '/src' folder with the following contents:
 
+```
   import React from 'react';
   import ReactDOM from 'react-dom';
   import App from './App';
@@ -86,11 +91,13 @@ The JavaScript entry point is the 'index.js' in the '/src' folder with the follo
     <App />,
     document.getElementById('root')
   );
+```
 
 The 'ReactDom.render' method takes the application element as a first parameter and the DOM-element where it is rendered as a second argument.
 
 The application element '<App />' is imported from the App.js file that you find in your src folder:
 
+```
   import React, { Component } from 'react';
   import logo from './logo.svg';
   import './App.css';
@@ -112,6 +119,7 @@ The application element '<App />' is imported from the App.js file that you find
   }
 
   export default App;
+```
 
 This is a very simple React component.
 It is a regular JavaScript class that extends the 'Component' class from react.
@@ -120,33 +128,47 @@ Its 'render' method is supposed to just return basic HTML.
 Variables can be injected into the HTML by using curly braces '{}'.
 The logo that we import with:
 
+```
   import logo from './logo.svg';
+```
 
 is injected into the 'src' attribute of the image tag:
 
+```
   <img src={logo} className="App-logo" alt="logo" />
+```
 
 To start the React app, we 'cd' into the directory we created:
 
+```
   $ cd plone.restapi-react-tutorial/
+```
 
 Then build the React application by running:
 
+```
   $ yarn install
+```
 
 To start your application run:
 
+```
   $ yarn start
+```
 
 Your browser will automatically open the react app on 'localhost:3000'.
 The app will automatically watch the files in the '/src' folder of your app and reload the application in your browser immediately.
 Try, for instance, to change the headline in 'src/App.js' from:
 
+```
   <h2>Welcome to React</h2>
+```
 
 to:
 
+```
   <h2>Welcome to Plone</h2>
+```
 
 This works for HTML, JavaScript and any style changes in your app.
 
@@ -162,12 +184,14 @@ We are going to make a single call to the Plone backend to retrieve the front-pa
 
 One of the core principles of React is a uni-directional data flow of component state. We define a constructor method, that sets the state of our
 
+```
   constructor(){
     super();
     this.state={
       page: {}
     };
   }
+```
 
 When our component has been instantiated properly, we want retrieve the Plone front-page via plone.restapi. A React component provides certain lifecycle events that can be used to do the back-end call.
 
@@ -177,6 +201,7 @@ We use the componentDidMount lifecycle event that is fired after the succesful i
 
 Note that React does not make any assumptions about what libraries you use to query the backend. You could as well use RxJs or any other library to do the call.
 
+```
   componentDidMount(){
     fetch(
       'http://localhost:8080/Plone/front-page',
@@ -194,6 +219,7 @@ Note that React does not make any assumptions about what libraries you use to qu
       console.log('Error fetching and parsing data', error);
     });
   }
+```
 
 The URL that we query for the backend call is similar to the URL you would use in a browser to retrieve the front-page in your browser. plone.restapi uses content negotiation to tell Plone that it actually would like to get a JSON response. This is done by sending the HTTP header 'Accept' with the value 'application/json'.
 
@@ -203,9 +229,13 @@ State variables that we defined in our constructor method and that has been fill
 
 Replace the Hello React headline with the title of the Plone front page:
 
+```
 <h2>{this.state.page.title}</h2>
+```
 
 We can also show the description and the body text of the front-page.
+
+```
   class AppContainer extends Component {
 
     ...
@@ -226,3 +256,5 @@ We can also show the description and the body text of the front-page.
       );
     }
   }
+```
+
