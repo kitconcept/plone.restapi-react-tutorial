@@ -9,49 +9,49 @@ To ease development with multiple Node versions, we recommend to use nvm (https:
 
 We will also use the yarn package manager (https://yarnpkg.com/en/) which provides you with repeatable and stable builds, amongst other features. To install yarn globally run:
 
-  $ npm install yarn -g
+` $ npm install yarn -g`
 
 You also need a Plone instance with plone.restapi installed. Here is a minimal buildout configuration:
 
 ```
-  [buildout]
-  extends = http://dist.plone.org/release/5.0.7/versions.cfg
-  parts = instance
-          plonesite
+[buildout]
+extends = http://dist.plone.org/release/5.0.7/versions.cfg
+parts = instance
+        plonesite
 
-  [instance]
-  recipe = plone.recipe.zope2instance
-  user = admin:admin
-  http-address = 8080
-  eggs =
-      Plone
-      plone.restapi
+[instance]
+recipe = plone.recipe.zope2instance
+user = admin:admin
+http-address = 8080
+eggs =
+    Plone
+    plone.restapi
 
-  zcml-additional =
-    <configure xmlns="http://namespaces.zope.org/zope"
-              xmlns:plone="http://namespaces.plone.org/plone">
-    <plone:CORSPolicy
-      allow_origin="http://localhost:4300,http://127.0.0.1:4300,http://localhost:3000,http://127.0.0.1:3000"
-      allow_methods="DELETE,GET,OPTIONS,PATCH,POST,PUT"
-      allow_credentials="true"
-      expose_headers="Content-Length,X-My-Header"
-      allow_headers="Accept,Authorization,Content-Type,X-Custom-Header"
-      max_age="3600"
-      />
-    </configure>
+zcml-additional =
+  <configure xmlns="http://namespaces.zope.org/zope"
+            xmlns:plone="http://namespaces.plone.org/plone">
+  <plone:CORSPolicy
+    allow_origin="http://localhost:4300,http://127.0.0.1:4300,http://localhost:3000,http://127.0.0.1:3000"
+    allow_methods="DELETE,GET,OPTIONS,PATCH,POST,PUT"
+    allow_credentials="true"
+    expose_headers="Content-Length,X-My-Header"
+    allow_headers="Accept,Authorization,Content-Type,X-Custom-Header"
+    max_age="3600"
+    />
+  </configure>
 
-  [plonesite]
-  recipe = collective.recipe.plonesite
-  site-id = Plone
-  instance = instance
-  profiles-initial = Products.CMFPlone:dependencies
-  profiles =
-      plonetheme.barceloneta:default
-      plone.app.contenttypes:plone-content
-      plone.restapi:default
-  upgrade-portal = False
-  upgrade-all-profiles = False
-  site-replace = True
+[plonesite]
+recipe = collective.recipe.plonesite
+site-id = Plone
+instance = instance
+profiles-initial = Products.CMFPlone:dependencies
+profiles =
+    plonetheme.barceloneta:default
+    plone.app.contenttypes:plone-content
+    plone.restapi:default
+upgrade-portal = False
+upgrade-all-profiles = False
+site-replace = True
 ```
 
 The instance section contains a zcml-additional configuration that defines a CORS policy that allows the React application to connection to our Plone backend. See https://pypi.python.org/pypi/plone.rest for further details if necessary.
