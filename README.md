@@ -9,7 +9,9 @@ To ease development with multiple Node versions, we recommend to use nvm (https:
 
 We will also use the yarn package manager (https://yarnpkg.com/en/) which provides you with repeatable and stable builds, amongst other features. To install yarn globally run:
 
-` $ npm install yarn -g`
+```
+  $ npm install yarn -g
+```
 
 You also need a Plone instance with plone.restapi installed. Here is a minimal buildout configuration:
 
@@ -63,12 +65,16 @@ The 'plonesite' section has been added as for convenience, to create a Plone ins
 
 To create our first React project, we have to install the [Create React App](https://github.com/facebookincubator/create-react-app):
 
+```
   $ yarn add create-react-app
+```
 
 We install create-react-app globally (by using the '-g' paramater) to make the 'create-react-app' command available on our command line.
 Create a new React application with the name 'plone.restapi-react-tutorial' by:
 
+```
   $ create-react-app plone.restapi-react-tutorial
+```
 
 Now open the 'plone.restapi-react-tutorial' folder in your prefered editor and check the files that have been created.
 
@@ -174,8 +180,9 @@ This works for HTML, JavaScript and any style changes in your app.
 
 create-react-app also comes with a Jest-based test setup and an example test that you can run with:
 
+```
   $ yarn test
-
+```
 
 ## Connecting to plone.restapi
 
