@@ -1,10 +1,8 @@
-plone.restapi-react-tutorial
-============================
+# plone.restapi-react-tutorial
 
 This tutorial explains how to build a React-based JavaScript front-end application that queries a Plone REST API back-end to display the front-page of the Plone site.
 
-Prerequisits
-------------
+## Prerequisits
 
 Before we can start, you need Node.js 6 and the Node package manager (npm) installed. Please check https://nodejs.org for install instructions.
 To ease development with multiple Node versions, we recommend to use nvm (https://github.com/creationix/nvm).
@@ -59,8 +57,7 @@ The instance section contains a zcml-additional configuration that defines a COR
 The 'plonesite' section has been added as for convenience, to create a Plone instance during the buildout run.
 
 
-Create React App
-----------------
+## Create React App
 
 To create our first React project, we have to install the [Create React App](https://github.com/facebookincubator/create-react-app):
 
@@ -158,8 +155,7 @@ create-react-app also comes with a Jest-based test setup and an example test tha
   $ yarn test
 
 
-Connecting to plone.restapi
----------------------------
+## Connecting to plone.restapi
 
 With the basic application structure in place, we can now start to connect to plone.restapi.
 We are going to make a single call to the Plone backend to retrieve the front-page of our Plone site and display it within our React app.
