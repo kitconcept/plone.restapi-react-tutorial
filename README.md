@@ -66,14 +66,14 @@ The 'plonesite' section has been added as for convenience, to create a Plone ins
 To create our first React project, we have to install the [Create React App](https://github.com/facebookincubator/create-react-app):
 
 ```
-  $ yarn add create-react-app
+  $ yarn add create-react-app -g
 ```
 
 We install create-react-app globally (by using the '-g' paramater) to make the 'create-react-app' command available on our command line.
 Create a new React application with the name 'plone.restapi-react-tutorial' by:
 
 ```
-  $ create-react-app plone.restapi-react-tutorial
+  $ yarn create-react-app plone.restapi-react-tutorial
 ```
 
 Now open the 'plone.restapi-react-tutorial' folder in your prefered editor and check the files that have been created.
@@ -101,7 +101,7 @@ The JavaScript entry point is the 'index.js' in the '/src' folder with the follo
 
 The 'ReactDom.render' method takes the application element as a first parameter and the DOM-element where it is rendered as a second argument.
 
-The application element '<App />' is imported from the App.js file that you find in your src folder:
+The application element `<App />` is imported from the App.js file that you find in your src folder:
 
 ```
   import React, { Component } from 'react';
@@ -138,13 +138,13 @@ The logo that we import with:
   import logo from './logo.svg';
 ```
 
-is injected into the 'src' attribute of the image tag:
+It is injected into the 'src' attribute of the image tag:
 
 ```
   <img src={logo} className="App-logo" alt="logo" />
 ```
 
-To start the React app, we 'cd' into the directory we created:
+To start the React app, we `cd` into the directory we created:
 
 ```
   $ cd plone.restapi-react-tutorial/
@@ -164,6 +164,7 @@ To start your application run:
 
 Your browser will automatically open the react app on 'localhost:3000'.
 The app will automatically watch the files in the '/src' folder of your app and reload the application in your browser immediately.
+
 Try, for instance, to change the headline in 'src/App.js' from:
 
 ```
@@ -189,7 +190,9 @@ create-react-app also comes with a Jest-based test setup and an example test tha
 With the basic application structure in place, we can now start to connect to plone.restapi.
 We are going to make a single call to the Plone backend to retrieve the front-page of our Plone site and display it within our React app.
 
-One of the core principles of React is a uni-directional data flow of component state. We define a constructor method, that sets the state of our
+One of the core principles of React is a uni-directional data flow of component state. We define a constructor method, that sets the inital state of our component.
+
+Add the following lines before the render function inside our App Component class:
 
 ```
   constructor(){
@@ -202,11 +205,13 @@ One of the core principles of React is a uni-directional data flow of component 
 
 When our component has been instantiated properly, we want retrieve the Plone front-page via plone.restapi. A React component provides certain lifecycle events that can be used to do the back-end call.
 
-Please note that this very basic example violates the single responsibility pattern that is considered best practice in the React community. A React component should only be responsible for one thing. Therefore in a real-world application, we would move the API call to a 'container component' that does the actual API call and use component props to pass it to the component that actually displays the content.
+**Note:** *This very basic example violates the single responsibility pattern that is considered best practice in the React community. A React component should only be responsible for one thing. Therefore in a real-world application, we would move the API call to a 'container component' that does the actual API call and use component props to pass it to the component that actually displays the content.*
 
-We use the componentDidMount lifecycle event that is fired after the succesful instantiation of the React component. We use the ES6 fetch API to do the call to the backend.
+We use the componentDidMount lifecycle event that is fired after the succesful instantiation of the React component and the ES6 fetch API to do the call to the backend.
 
-Note that React does not make any assumptions about what libraries you use to query the backend. You could as well use RxJs or any other library to do the call.
+**Note:** *React does not make any assumptions about what libraries you use to query the backend. You could as well use RxJs or any other library to do the call.*
+
+Add the following lines after our constructor definition, before the render function and start your Plone instance:
 
 ```
   componentDidMount(){
@@ -221,6 +226,7 @@ Note that React does not make any assumptions about what libraries you use to qu
     .then((response) => response.json())
     .then((responseData) => {
       this.setState({page: responseData});
+      console.log('Fetch from plone.restapi successful!')
     })
     .catch((error) => {
       console.log('Error fetching and parsing data', error);
@@ -232,6 +238,7 @@ The URL that we query for the backend call is similar to the URL you would use i
 
 Check your browser console and the network tab of your developer tools to make sure the API call was actually successful.
 With the successful API call in place we can now use the data that has been successfully stored in our component state variable.
+
 State variables that we defined in our constructor method and that has been filled with actual data in our componentsDidMount method can be accessed in the component render method now.
 
 Replace the Hello React headline with the title of the Plone front page:
@@ -241,6 +248,8 @@ Replace the Hello React headline with the title of the Plone front page:
 ```
 
 We can also show the description and the body text of the front-page.
+
+Add the following lines inside the return function of your render method before the closing div:
 
 ```
   class AppContainer extends Component {
@@ -260,8 +269,10 @@ We can also show the description and the body text of the front-page.
           this.state.page.text &&
           <p dangerouslySetInnerHTML={{ __html: this.state.page.text.data }} />
         }
+        ...
       );
     }
   }
 ```
 
+**Note:** *The ``&&``prevents the app from failing if those variables are not available.*
