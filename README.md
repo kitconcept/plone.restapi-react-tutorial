@@ -276,3 +276,5 @@ Add the following lines inside the return function of your render method before 
 ```
 
 **Note:** *The ``&&``prevents the app from failing if those variables are not available.*
+
+**Note:** *CORS (Cross-origin resource sharing) standard in HTML5 specifies which origins are permitted to request resources on the server. This may block the fetch request made to the local instance of Plone REST API. So for development purposes, extensions such as 'Access-Control-Allow-Origin' on Chrome can be used to temporarily override and send cross-domain requests directly.*
